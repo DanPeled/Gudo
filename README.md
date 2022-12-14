@@ -6,7 +6,7 @@ A 2D survival game
 ## Movement.cs
   defines a number of variables and functions that are used to control the character's movement, animation, and interactions with the game world.
 
-  The Start() function is called when the script is first run, and is used to initialize the character's state. In this function, the health bar is set to the character's maximum health, the character's sprite is enabled and its Animator component is set up, and the TypesRun component is initialized.
+  The **Start()** function is called when the script is first run, and is used to initialize the character's state. In this function, the health bar is set to the character's maximum health, the character's sprite is enabled and its Animator component is set up, and the TypesRun component is initialized.
 
   The **Update()** function is called every frame and is used to update the character's state and handle user input. In this function, the character's inventory is checked, a raycast is performed to determine what the character is currently pointing at, and the character's animation state is set based on the player's actions.
 
