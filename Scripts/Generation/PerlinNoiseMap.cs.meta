@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e1b31ca16ac228c4bb9f48f985b34b7a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - prefab_plains: {fileID: 2054740512571226584, guid: 7359d2d0d88847e4ab4aa88a21aa994c, type: 3}
+  - prefab_rocks: {fileID: 5856047205313799061, guid: 589a6aac6012b3a489196b7f327a9603, type: 3}
+  - prefab_rocks2: {fileID: 4395402484405547560, guid: 17828c0b3598c8540b5a7ea5e4976379, type: 3}
+  - prefab_water: {fileID: 4771302129724434754, guid: f9d889c06a64b0c4d8795f8f92370c92, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
