@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public class Building : MonoBehaviour
 {
     public GameObject[] placeable;
+    public GameObject[] amountObjects;
     public GameObject rocks;
     public GameObject[] tools;
     public int blockIndex = 0;
@@ -120,6 +121,12 @@ public class Building : MonoBehaviour
         for (int i = 0; i < inventory.Length; i++) // loops through the the inventory and setting the matcing images.
         {
             invetoryUI[i].GetComponent<Image>().sprite = inventory[i].item.GetComponent<SpriteRenderer>().sprite;
+            if(inventory[i].ItemName != ""){
+                amountObjects[i].GetComponent<TMPro.TextMeshProUGUI>().text = inventory[i].amount.ToString();
+            }
+            else{
+                amountObjects[i].GetComponent<TMPro.TextMeshProUGUI>().text = "";
+            }
         }
         currentBlock.transform.position = invetoryUI[blockIndex].transform.position;
         #endregion

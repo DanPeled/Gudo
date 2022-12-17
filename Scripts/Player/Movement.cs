@@ -82,10 +82,7 @@ public class Movement : MonoBehaviour
             #region Mele
             if (state == ToolState.Mele)
             {
-                if (Input.GetMouseButton(0))
-                {
-                    Debug.Log(inventory[GetComponent<Building>().blockIndex].ItemName);
-                }
+                
             }
             #endregion
             #region Mining
@@ -108,7 +105,6 @@ public class Movement : MonoBehaviour
                     }
                     if (block != null && Input.GetMouseButton(0) && inventory[GetComponent<Building>().blockIndex].ItemName != "sword")
                     {
-                        Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
                         playerState = PlayerState.Digging;
                         if (animationTime >= block.health)
                         {

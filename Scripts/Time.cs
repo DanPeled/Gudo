@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class Time : MonoBehaviour {
         night = 900
 
     }
+    public bool isChanging;
+    public bool day;
     public Times times;
     public GameObject playerAround, global, playerMiddle;
     public void setPlayerLightState(bool state){
@@ -27,28 +30,28 @@ public class Time : MonoBehaviour {
             yield return new WaitForSeconds(0.5f);
         }
     }
+    public void Start(){
+        setPlayerLightState(false);
+    }
     // Update is called once per frame
     void Update()
     {
         StartCoroutine(UpdateTime());
-        switch(times){
-            case Times.day:
-                if(global.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity != 0){
-                    ResetLights();
-            }
-                setPlayerLightState(false);
-                break;
-            case Times.noon:
-                setPlayerLightState(true);
-                playerAround.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 0;
-                playerMiddle.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 0.3f;
-                break;
-        }
+        global.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 1 - (currentTime / 100);
 
     }
     IEnumerator UpdateTime()
     {
-        yield return new WaitForSeconds(0.1f);
-        currentTime += 0.1f;
+        if(day){
+            currentTime += 0.01f;
+        }
+        else currentTime -= 2;
+        yield return new WaitForSeconds(1);
+        if(currentTime >= 90 || !day){
+            currentTime = 80;
+        }
+        if(currentTime <= 0){
+            day = true;
+        }
     }
 }
