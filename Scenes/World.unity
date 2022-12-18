@@ -2230,7 +2230,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 501026422}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2253,18 +2253,19 @@ MonoBehaviour:
   txt: {fileID: 1496641763}
   enable:
   - {fileID: 393762524}
-  - {fileID: 1886677775}
   - {fileID: 1555377309}
+  - {fileID: 1886677775}
   blocks:
   - {fileID: 2054740512571226584, guid: f3628d0cf7405fc45b68bf95d7453aee, type: 3}
   - {fileID: 2919787059715860691, guid: 963565909bdbe904781dd3ec6125abc5, type: 3}
-  - {fileID: 6844608935046081064, guid: c33ca1eaf822fbd4cb62e12a371b2cd6, type: 3}
-  - {fileID: 5856047205313799061, guid: 589a6aac6012b3a489196b7f327a9603, type: 3}
+  - {fileID: 7063670192744669389, guid: e3dbcf15072b9cf478ac6c9a802ac1eb, type: 3}
   - {fileID: 1017635870540271323, guid: c5cfa4e52f1877741bb3ecddba59892d, type: 3}
+  - {fileID: 5856047205313799061, guid: 589a6aac6012b3a489196b7f327a9603, type: 3}
+  - {fileID: 6844608935046081064, guid: c33ca1eaf822fbd4cb62e12a371b2cd6, type: 3}
   - {fileID: 4395402484405547560, guid: 17828c0b3598c8540b5a7ea5e4976379, type: 3}
   - {fileID: 4771302129724434754, guid: f9d889c06a64b0c4d8795f8f92370c92, type: 3}
   - {fileID: 2293638854269454819, guid: 4a1cc39f10a015046b34936c92de0b06, type: 3}
-  - {fileID: 7063670192744669389, guid: e3dbcf15072b9cf478ac6c9a802ac1eb, type: 3}
+  - {fileID: 5652813594235207924, guid: d5aa689a4e41e9d42bc38914ed571079, type: 3}
   map_width: 400
   map_height: 200
 --- !u!1 &503020728
@@ -3154,7 +3155,7 @@ MonoBehaviour:
   - {fileID: 9187189230697794631, guid: 24c92d98a6e80a146a96ad57a24bca18, type: 3}
   - {fileID: 9187189230697794631, guid: 24c92d98a6e80a146a96ad57a24bca18, type: 3}
   blockIndex: 1
-  invetoryUI:
+  inventoryUI:
   - {fileID: 1657507206}
   - {fileID: 1002832831}
   - {fileID: 2034190419}
@@ -6283,9 +6284,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 308924912}
+  - {fileID: 436801085}
   - {fileID: 1609995557}
   - {fileID: 1608199094}
-  - {fileID: 436801085}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

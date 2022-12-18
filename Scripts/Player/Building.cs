@@ -14,7 +14,7 @@ public class Building : MonoBehaviour
     public int blockIndex = 0;
     public Slot[] inventory = new Slot[10];
     RaycastHit2D hit;
-    public GameObject[] invetoryUI;
+    public GameObject[] inventoryUI;
     public bool creative;
     public GameObject currentBlock;
     Movement player;
@@ -82,7 +82,6 @@ public class Building : MonoBehaviour
         {
             blockIndex = 0;
         }
-        if (Input.GetKeyDown(KeyCode.B)) creative = !creative;
         #endregion
         #region Placing Blocks
         if (player.playerActive && player.playerState != Movement.PlayerState.Digging)
@@ -120,7 +119,7 @@ public class Building : MonoBehaviour
         #region Image Updating
         for (int i = 0; i < inventory.Length; i++) // loops through the the inventory and setting the matcing images.
         {
-            invetoryUI[i].GetComponent<Image>().sprite = inventory[i].item.GetComponent<SpriteRenderer>().sprite;
+            inventoryUI[i].GetComponent<Image>().sprite = inventory[i].item.GetComponent<SpriteRenderer>().sprite;
             if(inventory[i].ItemName != ""){
                 amountObjects[i].GetComponent<TMPro.TextMeshProUGUI>().text = inventory[i].amount.ToString();
             }
@@ -128,7 +127,7 @@ public class Building : MonoBehaviour
                 amountObjects[i].GetComponent<TMPro.TextMeshProUGUI>().text = "";
             }
         }
-        currentBlock.transform.position = invetoryUI[blockIndex].transform.position;
+        currentBlock.transform.position = inventoryUI[blockIndex].transform.position;
         #endregion
     }
     private void OnTriggerEnter2D(Collider2D collision)
