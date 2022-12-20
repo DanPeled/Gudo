@@ -34,7 +34,7 @@ public class Time : MonoBehaviour {
         if(day){
             currentTime += 0.01f;
         }
-        else currentTime -= 1;
+        else currentTime -= 0.1f;
         yield return new WaitForSeconds(1);
         if(currentTime >= 90 && !day){
             currentTime = 80;
@@ -48,8 +48,18 @@ public class Time : MonoBehaviour {
         }
         if(currentTime >= 30){
         setPlayerLightState(true);
-        playerAround.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 0 + (currentTime / 100);  
-        playerMiddle.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 0 + (currentTime / 100);
+        playerAround.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = -.5f + (currentTime / 100);  
+        playerMiddle.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = -.5f + (currentTime / 100);
+        }
+        else{
+            playerAround.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 0;
+            playerMiddle.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 0;
+        }
+        if(playerAround.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity <= 0){
+            playerAround.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 0;
+        }
+        if(playerMiddle.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity <= 0){
+            playerMiddle.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 0;
         }
     }
 }

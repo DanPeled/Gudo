@@ -120,6 +120,7 @@ public class Building : MonoBehaviour
         for (int i = 0; i < inventory.Length; i++) // loops through the the inventory and setting the matcing images.
         {
             inventoryUI[i].GetComponent<Image>().sprite = inventory[i].item.GetComponent<SpriteRenderer>().sprite;
+            inventoryUI[i].GetComponent<Image>().material = null;
             if(inventory[i].ItemName != ""){
                 amountObjects[i].GetComponent<TMPro.TextMeshProUGUI>().text = inventory[i].amount.ToString();
             }
