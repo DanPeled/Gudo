@@ -12,11 +12,17 @@ A 2D survival game
 
   The **FixedUpdate()** function is called every fixed frame and is used to handle the character's movement. In this function, the character's velocity is set based on the player's input and the character's current run speed.
 ## <a href = "https://github.com/DanPeled/Gudo/blob/master/Scripts/Player/Building.cs">Building.cs</a>
-defines a number of variables and functions that are used to manage the player's inventory, place and destroy blocks, and interact with the game world.
+ It has several functions including handling the player's inventory, placing blocks, and switching between items in the inventory using the number keys.
 
-The **Start()** function is called when the script is first run, and is used to initialize the player's inventory. In this function, the player's inventory is filled with tools, and a dictionary of placeable blocks is created.
+The Start() function initializes the player's inventory by adding four tools to the first four slots and setting the rest of the slots to an empty slot object. It also populates a dictionary with the IDs of blocks as the keys and the corresponding block GameObjects as the values.
 
-The **Update()** function is called every frame and is used to handle user input and update the game world. In this function, the player's inventory is checked for empty slots, and keyboard input is used to switch the player's currently selected block. The function also handles the placing and destroying of blocks based on the player's input.
+The Update() function handles player input to place and drop blocks, as well as switch between items in the inventory using the number keys. When the player right-clicks, it will try to place the current block in their inventory at the mouse position. If the player left-clicks, it will try to dig the block at the mouse position. If the player scrolls the mouse wheel, it will switch to the next or previous item in the inventory.
+
+The AddBlock() function creates a new Slot object with the given parameters and returns it. A Slot object contains information about an item in the inventory such as its name, description, rarity, amount, and the GameObject of the item.
+
+The none_ and none variables are used to store an empty GameObject and the empty variable is an instance of the Slot class with default values for an empty slot. The blocks dictionary is used to look up the GameObject of a block based on its ID.
+
+The script also has a RaycastHit2D object named hit which is used to check for collisions with blocks when the player tries to place or dig a block. It also has several arrays for storing different types of GameObjects such as placeable blocks, tools, and the inventory UI. The blockIndex variable is used to keep track of which item in the inventory is currently selected. The creative boolean determines whether the player is in creative mode, which allows them to place an unlimited amount of blocks. The player variable is a reference to the Movement script attached to the player GameObject. The items array stores information about all the items in the game.
 ## <a href = "https://github.com/DanPeled/Gudo/blob/master/Scripts/Generation/PerlinNoiseMap.cs">PerlinNoiseMap.cs</a>
 The **Start()** function is called when the script is first run, and is used to initialize the map generation process. In this function, the tileset (a dictionary of tile prefabs) and tile groups (empty game objects used to group tiles of the same type) are created, and the **GenerateMap()** function is called as a coroutine.
 
