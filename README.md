@@ -29,3 +29,22 @@ The SetMaxHealth function sets the maximum value for the health bar, which repre
 The SetHealth function sets the current value of the health bar to the specified health value. This can be used to update the health bar as the game object takes damage or recovers health.
 
 The **MonoBehaviour** class is a base class for scripts in Unity. This script derives from **MonoBehaviour** and overrides two of its methods, Start and Update, to implement the behavior of the health bar. The Start method is called when the script is first loaded, and the Update method is called every frame, allowing the script to update the health bar as needed.
+
+## <a href = "https://github.com/DanPeled/Gudo/blob/master/Scripts/Time.cs">Time.cs</a>
+This script keeps track of in-game time and adjusts certain aspects of the game depending on the current time. The script is attached to a game object in the Unity scene.
+
+The script starts by declaring several variables at the top:
+
+currentTime: a float variable that keeps track of the current time in the game, with a default value of 0.
+day: a boolean variable that indicates whether it is currently day or night in the game.
+times: an enum (enumeration) type called Times with three possible values: day, noon, and night. Each value is assigned a number.
+playerAround, global, and playerMiddle: three variables of type GameObject that represent objects in the Unity scene. These objects are not defined in this script, but they are likely assigned to these variables in the Unity editor or through other scripts.
+The script also includes several functions:
+
+setPlayerLightState: a function that takes a boolean value called state as an input and sets the active state of both playerAround and playerMiddle objects to state.
+Start: a special function in Unity that is called when the script is first loaded. In this case, the setPlayerLightState function is called with false as an input, which deactivates both playerAround and playerMiddle objects.
+Update: a special function in Unity that is called every frame of the game. The UpdateTime function is called within this function.
+UpdateTime: a function that is called every frame, and updates the currentTime variable based on whether it is currently day or night. The function also adjusts the intensity of the light on the playerAround and playerMiddle objects based on the current time. If the current time is between 30 and 90, the light intensity of these objects is set to a value between 0 and 0.5, with a value of 0.5 at 90. If the current time is less than 30, the light intensity is set to 0. The function also has a yield return statement that waits for 1 second before continuing, to slow down the rate at which currentTime is updated.
+
+
+
