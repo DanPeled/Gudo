@@ -28,11 +28,11 @@ public class Building : MonoBehaviour
         none = none_;
         empty = new Slot("", "", Block.Rarity.None, 1, none, false, 0);
         player = GetComponent<Movement>();
-        for (int i = 3; i < inventory.Length; i++)
+        for (int i = 4; i < inventory.Length; i++)
         {
             inventory[i] = empty;
         }
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             inventory[i] = AddBlock(tools[i],
                 tools[i].GetComponent<Item>().ItemName, 1,
@@ -43,6 +43,7 @@ public class Building : MonoBehaviour
         {
             blocks.Add(i, placeable[i]);
         }
+        inventory[0] = empty;
     }
     public Slot AddBlock(GameObject block, string blockName,
         int amount, string desc, Block.Rarity rarity, bool isBlock, float ID)
@@ -53,6 +54,11 @@ public class Building : MonoBehaviour
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q) && player.playerActive){
+            GameObject drop = Instantiate(inventory[blockIndex].item);
+            drop.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            drop.transform.position = new Vector3(drop.transform.position.x, drop.transform.position.y, 1f);
+            inventory[blockIndex].amount--;}
         int inde = 0;
         foreach (Slot slot in inventory)
         {
@@ -63,24 +69,26 @@ public class Building : MonoBehaviour
             }
         }
         #region Keys
-        if (Input.GetKeyDown(KeyCode.Alpha0)) blockIndex = 0; // Checks which number you click and sets the blockIndex var matching.
-        if (Input.GetKeyDown(KeyCode.Alpha1)) blockIndex = 1;
-        if (Input.GetKeyDown(KeyCode.Alpha2)) blockIndex = 2;
-        if (Input.GetKeyDown(KeyCode.Alpha3)) blockIndex = 3;
-        if (Input.GetKeyDown(KeyCode.Alpha4)) blockIndex = 4;
-        if (Input.GetKeyDown(KeyCode.Alpha5)) blockIndex = 5;
-        if (Input.GetKeyDown(KeyCode.Alpha6)) blockIndex = 6;
-        if (Input.GetKeyDown(KeyCode.Alpha7)) blockIndex = 7;
-        if (Input.GetKeyDown(KeyCode.Alpha8)) blockIndex = 8;
-        if (Input.GetKeyDown(KeyCode.Alpha9)) blockIndex = 9;
-        blockIndex += (int)Input.mouseScrollDelta.y;
-        if (blockIndex < 0)
-        {
-            blockIndex = 9;
-        }
-        if (blockIndex > 9)
-        {
-            blockIndex = 0;
+        if(player.playerActive){
+            if (Input.GetKeyDown(KeyCode.Alpha0)) blockIndex = 0; // Checks which number you click and sets the blockIndex var matching.
+            if (Input.GetKeyDown(KeyCode.Alpha1)) blockIndex = 1;
+            if (Input.GetKeyDown(KeyCode.Alpha2)) blockIndex = 2;
+            if (Input.GetKeyDown(KeyCode.Alpha3)) blockIndex = 3;
+            if (Input.GetKeyDown(KeyCode.Alpha4)) blockIndex = 4;
+            if (Input.GetKeyDown(KeyCode.Alpha5)) blockIndex = 5;
+            if (Input.GetKeyDown(KeyCode.Alpha6)) blockIndex = 6;
+            if (Input.GetKeyDown(KeyCode.Alpha7)) blockIndex = 7;
+            if (Input.GetKeyDown(KeyCode.Alpha8)) blockIndex = 8;
+            if (Input.GetKeyDown(KeyCode.Alpha9)) blockIndex = 9;
+            blockIndex += (int)Input.mouseScrollDelta.y;
+            if (blockIndex < 0)
+            {
+                blockIndex = 9;
+            }
+            if (blockIndex > 9)
+            {
+                blockIndex = 0;
+            }
         }
         #endregion
         #region Placing Blocks
@@ -133,10 +141,11 @@ public class Building : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+    #region Item Collection
         Item item = collision.gameObject.GetComponent<Item>();
         if (item != null)
         {
-            for (int i = 0; i < inventory.Length; i++)
+            for (int i = 1; i < inventory.Length; i++)
             {
                 if (inventory[i].ItemName == "")
                 {
@@ -159,6 +168,7 @@ public class Building : MonoBehaviour
                 }
             }
         }
+        #endregion
     }
 }
 public class Slot

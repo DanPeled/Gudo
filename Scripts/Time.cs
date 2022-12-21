@@ -1,16 +1,15 @@
-using System.Diagnostics;
-using System.Globalization;
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Time : MonoBehaviour {
+    // A day goes from 0 to 90, ~ 26 minutes
     public float currentTime = 0;
+    public GameObject clock;
     public enum Times{
         day = 0,
         noon = 550,
         night = 900
-
     }
     public bool day;
     public Times times;
@@ -25,6 +24,14 @@ public class Time : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if(0 <= currentTime && currentTime < 30){
+            times = Times.day;
+        }
+        else if(30 >= currentTime && currentTime < 70){
+            times = Times.noon;
+        }
+        else if(currentTime >= 70) times = Times.night;
+
         StartCoroutine(UpdateTime());
         global.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 1 - (currentTime / 100);
 
@@ -32,9 +39,9 @@ public class Time : MonoBehaviour {
     IEnumerator UpdateTime()
     {
         if(day){
-            currentTime += 0.01f;
+            currentTime += 0.0005f;
         }
-        else currentTime -= 0.1f;
+        else currentTime -= 0.07f;
         yield return new WaitForSeconds(1);
         if(currentTime >= 90 && !day){
             currentTime = 80;

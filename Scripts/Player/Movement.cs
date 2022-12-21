@@ -68,7 +68,7 @@ public class Movement : MonoBehaviour
     {
         inventory = this.GetComponent<Building>().inventory;
         hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-        if (Input.GetMouseButtonDown(0) && inventory[GetComponent<Building>().blockIndex].ItemName != "sword")
+        if (Input.GetMouseButtonDown(0) && inventory[GetComponent<Building>().blockIndex].ItemName == "shovel")
         {
             hitObject = hit.collider.gameObject;
             state = ToolState.Mining;
@@ -79,6 +79,7 @@ public class Movement : MonoBehaviour
         if (playerActive)
         {
             if (inventory[GetComponent<Building>().blockIndex].ItemName == "sword") playerState = PlayerState.Mele;
+            if (inventory[GetComponent<Building>().blockIndex].ItemName == "shovel") playerState = PlayerState.Digging;
             #region Mele
             if (state == ToolState.Mele)
             {
@@ -86,7 +87,7 @@ public class Movement : MonoBehaviour
             }
             #endregion
             #region Mining
-            if (state == ToolState.Mining && inventory[GetComponent<Building>().blockIndex].ItemName != "sword")
+            if (state == ToolState.Mining && inventory[GetComponent<Building>().blockIndex].ItemName == "shovel")
             {
                 if (hit.collider != null)
                 {
@@ -94,7 +95,9 @@ public class Movement : MonoBehaviour
                     {
                         animationTime = 0;
                     }
-                    if (playerState != PlayerState.Walking && state != ToolState.None && inventory[GetComponent<Building>().blockIndex].ItemName != "sword") playerState = PlayerState.Digging;
+                    if (playerState != PlayerState.Walking &&
+                     state != ToolState.None &&
+                      inventory[GetComponent<Building>().blockIndex].ItemName == "shovel") playerState = PlayerState.Digging;
                     if (state == ToolState.None) playerState = PlayerState.Idle;
                     Block block = hit.collider.GetComponent<Block>();
                     Plant plant = hit.collider.GetComponent<Plant>();
@@ -103,9 +106,10 @@ public class Movement : MonoBehaviour
                         playerState = PlayerState.Idle;
                         state = ToolState.None;
                     }
-                    if (block != null && Input.GetMouseButton(0) && inventory[GetComponent<Building>().blockIndex].ItemName != "sword")
+                    if (block != null && Input.GetMouseButton(0) &&
+                     playerState == PlayerState.Digging &&
+                      inventory[GetComponent<Building>().blockIndex].ItemName == "shovel")
                     {
-                        playerState = PlayerState.Digging;
                         if (animationTime >= block.health)
                         {
                             block.health--;
@@ -164,9 +168,8 @@ public class Movement : MonoBehaviour
 
                 }
                 else if (Input.GetMouseButton(0) &&
-                    inventory[GetComponent<Building>().blockIndex].ItemName != "sword")
+                    inventory[GetComponent<Building>().blockIndex].ItemName == "shovel")
                 {
-                    Debug.Log(inventory[GetComponent<Building>().blockIndex].ItemName);
                     playerState = PlayerState.Digging;
                     anim.SetInteger("state", 2);
                 }
