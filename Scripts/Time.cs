@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using UnityEngine;
-
-public class Time : MonoBehaviour {
+using SmartConsole;
+using UnityEngine.Rendering.Universal;
+public class Time : MonoBehaviour{
     // A day goes from 0 to 90, ~ 26 minutes
-    public float currentTime = 0;
+    [Range(0f,90f)] public float currentTime = 0;
+    public static Time instance;
     public GameObject clock;
     public enum Times{
         day = 0,
@@ -20,10 +22,12 @@ public class Time : MonoBehaviour {
     }
     public void Start(){
         setPlayerLightState(false);
+        SetStateForAllTorches(false);
     }
     // Update is called once per frame
     void Update()
     {
+        instance = this;
         if(0 <= currentTime && currentTime < 30){
             times = Times.day;
         }
@@ -31,9 +35,9 @@ public class Time : MonoBehaviour {
             times = Times.noon;
         }
         else if(currentTime >= 70) times = Times.night;
-
-        StartCoroutine(UpdateTime());
-        global.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 1 - (currentTime / 100);
+        if(GetComponent<Movement>().playerActive)
+            StartCoroutine(UpdateTime());
+        global.GetComponent<Light2D>().intensity = 1 - (currentTime / 100);
 
     }
     IEnumerator UpdateTime()
@@ -55,18 +59,45 @@ public class Time : MonoBehaviour {
         }
         if(currentTime >= 30){
         setPlayerLightState(true);
-        playerAround.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = -.5f + (currentTime / 100);  
-        playerMiddle.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = -.5f + (currentTime / 100);
+        playerAround.GetComponent<Light2D>().intensity = -.5f + (currentTime / 100);  
+        playerMiddle.GetComponent<Light2D>().intensity = -.5f + (currentTime / 100);
+        
+        setIntensityForAllTorches(playerMiddle.GetComponent<Light2D>().intensity);
+        SetStateForAllTorches(true); // Makes all the torches active in the scene
         }
         else{
-            playerAround.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 0;
-            playerMiddle.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 0;
+            playerAround.GetComponent<Light2D>().intensity = 0;
+            playerMiddle.GetComponent<Light2D>().intensity = 0;
+            setIntensityForAllTorches(0);
+            SetStateForAllTorches(false);
         }
-        if(playerAround.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity <= 0){
-            playerAround.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 0;
+        if(playerAround.GetComponent<Light2D>().intensity <= 0){
+            playerAround.GetComponent<Light2D>().intensity = 0;
         }
-        if(playerMiddle.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity <= 0){
-            playerMiddle.GetComponent<UnityEngine.Rendering.Universal.Light2D>().intensity = 0;
+        if(playerMiddle.GetComponent<Light2D>().intensity <= 0){
+            playerMiddle.GetComponent<Light2D>().intensity = 0;
+            setIntensityForAllTorches(0);
         }
     }
+    void setIntensityForAllTorches(float intensity){
+        try{
+            for(int i = 0; i < GameObject.FindGameObjectsWithTag("torch").Length; i++){ // Loops through every torch in the game
+                    GameObject.FindGameObjectsWithTag("torch")[i].GetComponentInChildren<Light2D>().intensity = intensity; // Sets the intensity of the torch to the intesity var.
+            }
+        }
+        catch{
+            
+        }
+    }
+    void SetStateForAllTorches(bool state){
+        try{
+            for(int i = 0; i < GameObject.FindGameObjectsWithTag("torch").Length; i++){ // Loops through every torch in the game
+                    GameObject.FindGameObjectsWithTag("torch")[i].GetComponentInChildren<Light2D>().enabled = state; // Sets the torch's light enables state for the state var
+            }
+        }
+        catch{
+            
+        }
+    }
+    
 }

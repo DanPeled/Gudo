@@ -22,6 +22,7 @@ public class Building : MonoBehaviour
     public GameObject none_;
     public static GameObject none;
     public Slot empty;
+    public Camera cam;
     public Dictionary<float, GameObject> blocks = new Dictionary<float, GameObject>();
     private void Start()
     {
@@ -98,8 +99,12 @@ public class Building : MonoBehaviour
             {
                 hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
                 Vector2 pos = hit.collider.gameObject.transform.position;
-                if (hit.collider.gameObject != gameObject && !hit.collider.gameObject.tag.Equals("Plant") && hit.collider.gameObject.layer != 5 && inventory[blockIndex].item.GetComponent<Block>() != null)
+                if (hit.collider.gameObject != gameObject &&
+                 !hit.collider.gameObject.tag.Equals("Plant") &&
+                  hit.collider.gameObject.layer != 5 && (
+                   inventory[blockIndex].item.GetComponent<Block>() != null || inventory[blockIndex].ID == 11))
                 {
+                    Debug.Log(inventory[blockIndex].ID);
                     GameObject placed = Instantiate(empty.item);
                     if (inventory[blockIndex].ID != 7)
                     {
@@ -109,11 +114,10 @@ public class Building : MonoBehaviour
                     {
                         placed = Instantiate(rocks);
                     }
-
                     placed.transform.position = pos;
 
                     placed.name = string.Format("tile_x{0}_y{1}", placed.transform.position.x, placed.transform.position.y);
-                    Destroy(hit.collider.gameObject);
+                    if(placed.GetComponent<Animator>() == null) Destroy(hit.collider.gameObject);
                     Debug.Log(string.Format("Placed {0} at {1}", placed.name, pos));
                     if (!creative)
                         inventory[blockIndex].amount--;

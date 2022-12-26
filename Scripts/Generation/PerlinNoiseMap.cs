@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PerlinNoiseMap : MonoBehaviour
 {
-    public Movement player;
     public GameObject txt;
     public GameObject[] enable;
     Dictionary<int, GameObject> tileset;
@@ -12,29 +11,30 @@ public class PerlinNoiseMap : MonoBehaviour
     public GameObject[] blocks;
     public int map_width = 160;
     public int map_height = 90;
-
+    [Range(-100000000f, 100000000f)] public float seed;
+    public bool randomWorld;
     List<List<int>> noise_grid = new List<List<int>>();
     List<List<GameObject>> tile_grid = new List<List<GameObject>>();
-
     // recommend 4 to 20
-    float magnification = 7.0f;
+    [Range(0f, 200f)] public float magnification = 14.5f;
 
     int x_offset = 0; // <- +>
     int y_offset = 0; // v- +^
 
     void Start()
     {
+        if(randomWorld) seed = Random.Range(-Random.Range(0,100000000), Random.Range(0,100000000));
         GameObject.Find("Inventory").SetActive(false);
         GameObject.Find("HealthBar").SetActive(false);
         GameObject.Find("HealthBarIcon").SetActive(false);
-
-        player.playerActive = false;
+        Camera.main.orthographicSize = 100;
+        GameObject.Find("Player").GetComponent<Movement>().playerActive = false;
         CreateTileset();
         CreateTileGroups();
-        StartCoroutine(GenerateMap());
+        StartCoroutine(GenerateMap((float)seed));
+
         
     }
-
     void CreateTileset()
     {
         /** Collect and assign ID codes to the tile prefabs, for ease of access.
@@ -62,8 +62,9 @@ public class PerlinNoiseMap : MonoBehaviour
         }
     }
 
-    IEnumerator GenerateMap()
+    IEnumerator GenerateMap(float seed)
     {
+        Camera.main.orthographicSize = 100;
         /** Generate a 2D grid using the Perlin noise fuction, storing it as
             both raw ID values and tile gameobjects **/
         int index = 0;
@@ -75,7 +76,7 @@ public class PerlinNoiseMap : MonoBehaviour
             yield return new WaitForSeconds(0.00001f);
             for (int y = 0; y < map_height; y++)
             {
-                int tile_id = GetIdUsingPerlin(x, y);
+                int tile_id = GetIdUsingPerlin(x, y,seed);
                 noise_grid[x].Add(tile_id);
                 CreateTile(tile_id, x, y);
                 index++;
@@ -90,21 +91,26 @@ public class PerlinNoiseMap : MonoBehaviour
                     enable[i].SetActive(true);
                 }
                 txt.transform.parent.gameObject.SetActive(false);
+                for(int i = 100; i >= 5; i-=3){
+                    Camera.main.orthographicSize = i;
+                    yield return new WaitForSeconds(0.01f);
+                }
+                Camera.main.orthographicSize = 6;
             }
         }
         Debug.Log("Finsihed generating");
-        player.playerActive = true;
+        GameObject.Find("Player").GetComponent<Movement>().playerActive = true;
     }
 
-    int GetIdUsingPerlin(int x, int y)
+    int GetIdUsingPerlin(int x, int y, float seed)
     {
         /** Using a grid coordinate input, generate a Perlin noise value to be
             converted into a tile ID code. Rescale the normalised Perlin value
             to the number of tiles available. **/
 
         float raw_perlin = Mathf.PerlinNoise(
-            (x - x_offset + Random.Range(0, 1)) / magnification,
-            (y - y_offset + Random.Range(0, 3)) / magnification
+            (x - x_offset + seed) / magnification,
+            (y - y_offset + seed) / magnification
         );
         float clamp_perlin = Mathf.Clamp01(raw_perlin);
         float scaled_perlin = clamp_perlin * tileset.Count;

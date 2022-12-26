@@ -40,7 +40,8 @@ public class Movement : MonoBehaviour
         Idle = 0,
         Walking = 1,
         Digging = 2,
-        Mele = 3
+        Mele = 3,
+        Rolling = 4
     }
     public ToolState state = ToolState.None;
     public PlayerState playerState = PlayerState.Idle;
@@ -78,7 +79,7 @@ public class Movement : MonoBehaviour
         #region playerActive
         if (playerActive)
         {
-            if (inventory[GetComponent<Building>().blockIndex].ItemName == "sword") playerState = PlayerState.Mele;
+            if (inventory[GetComponent<Building>().blockIndex].ItemName == "sword" && !Input.GetKey(KeyCode.Space)) playerState = PlayerState.Mele;
             if (inventory[GetComponent<Building>().blockIndex].ItemName == "shovel") playerState = PlayerState.Digging;
             #region Mele
             if (state == ToolState.Mele)
@@ -157,7 +158,10 @@ public class Movement : MonoBehaviour
                 {
                     sprite[index].flipX = false;
                 }
-                playerState = PlayerState.Walking;
+                if(playerState != PlayerState.Rolling){
+                    playerState = PlayerState.Walking;
+                    runSpeed = defaultRunSpeed;
+                }
             }
 
             else
@@ -174,6 +178,12 @@ public class Movement : MonoBehaviour
                     anim.SetInteger("state", 2);
                 }
             }
+            #region Rolling
+            if(Input.GetKeyDown(KeyCode.Space)){
+                playerState = PlayerState.Rolling;
+                runSpeed = 20;
+            }
+            #endregion
             #endregion
         }
         #endregion
@@ -204,6 +214,7 @@ public class Movement : MonoBehaviour
     #region Water Walking speed change
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.gameObject.CompareTag("Water"));
         if (collision.gameObject.CompareTag("Water"))
         {
 
@@ -223,5 +234,4 @@ public class Movement : MonoBehaviour
         this.health -= damage;
         healthBar.SetHealth(health);
     }
-
 }
