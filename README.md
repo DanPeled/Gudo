@@ -47,7 +47,7 @@ setPlayerLightState: a function that takes a boolean value called state as an in
 Start: a special function in Unity that is called when the script is first loaded. In this case, the setPlayerLightState function is called with false as an input, which deactivates both playerAround and playerMiddle objects.
 Update: a special function in Unity that is called every frame of the game. The UpdateTime function is called within this function.
 UpdateTime: a function that is called every frame, and updates the currentTime variable based on whether it is currently day or night. The function also adjusts the intensity of the light on the playerAround and playerMiddle objects based on the current time. If the current time is between 30 and 90, the light intensity of these objects is set to a value between 0 and 0.5, with a value of 0.5 at 90. If the current time is less than 30, the light intensity is set to 0. The function also has a yield return statement that waits for 1 second before continuing, to slow down the rate at which currentTime is updated.
-# [GameHandler.cs]()
+# [GameHandler.cs](https://github.com/DanPeled/Gudo/blob/master/Scripts/GameHandler.cs)
 This code is responsible for saving and loading the game state in a Unity project. It uses the JsonUtility class to serialize and deserialize the game data to and from a JSON string.
 
 The SaveGame method is responsible for saving the game data. It does this by creating a SaveData object and filling it with the current state of the game. It then converts this object to a JSON string using JsonUtility.ToJson and saves it to a file with the specified saveFileName.
