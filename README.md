@@ -1,4 +1,4 @@
-# Gudo
+# GUDO
 # Files Explanation
 ## [Movement.cs](https://github.com/DanPeled/Gudo/blob/master/Scripts/Player/Movement.cs)
   defines a number of variables and functions that are used to control the character's movement, animation, and interactions with the game world.
