@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 using UnityEngine.UI;
 public class PerlinNoiseMap : MonoBehaviour
 {
+    public static PerlinNoiseMap instance;
     public GameObject txt;
     public GameObject[] enable;
     Dictionary<int, GameObject> tileset;
+    public GameHandler gameHandler;
     Dictionary<int, GameObject> tile_groups;
     public GameObject[] blocks;
     public int map_width = 160;
@@ -24,6 +27,8 @@ public class PerlinNoiseMap : MonoBehaviour
     void Start()
     {
         if(randomWorld) seed = Random.Range(-Random.Range(0,100000000), Random.Range(0,100000000));
+        if(seed == 63804990) seed = Random.Range(-Random.Range(0,100000000), Random.Range(0,100000000));
+        
         GameObject.Find("Inventory").SetActive(false);
         GameObject.Find("HealthBar").SetActive(false);
         GameObject.Find("HealthBarIcon").SetActive(false);
@@ -32,7 +37,7 @@ public class PerlinNoiseMap : MonoBehaviour
         CreateTileset();
         CreateTileGroups();
         StartCoroutine(GenerateMap((float)seed));
-
+        instance = this;
         
     }
     void CreateTileset()

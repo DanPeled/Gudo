@@ -8,6 +8,8 @@ public class Movement : MonoBehaviour
 {
     #region Vars
     public Animator anim;
+    public static Movement instance;
+    public bool consoleActive;
     public HealthBarScript healthBar;
     public SpriteRenderer[] sprite;
     public GameObject spriteRend;
@@ -34,6 +36,9 @@ public class Movement : MonoBehaviour
         Mele,
         Range,
         Mining,
+    }
+    public void ToggleConsole(){
+        consoleActive = !consoleActive;
     }
     public enum PlayerState
     {
@@ -67,6 +72,7 @@ public class Movement : MonoBehaviour
     }
     void Update()
     {
+        instance = this;
         inventory = this.GetComponent<Building>().inventory;
         hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
         if (Input.GetMouseButtonDown(0) && inventory[GetComponent<Building>().blockIndex].ItemName == "shovel")
@@ -77,7 +83,7 @@ public class Movement : MonoBehaviour
         anim.SetInteger("state", (int)playerState);
         animationTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
         #region playerActive
-        if (playerActive)
+        if (playerActive && !consoleActive)
         {
             if (inventory[GetComponent<Building>().blockIndex].ItemName == "sword" && !Input.GetKey(KeyCode.Space)) playerState = PlayerState.Mele;
             if (inventory[GetComponent<Building>().blockIndex].ItemName == "shovel") playerState = PlayerState.Digging;
@@ -192,7 +198,7 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (playerActive)
+        if (playerActive && !consoleActive)
         {
             if (horizontal != 0 && vertical != 0) // Check for diagonal movement
 
@@ -214,7 +220,6 @@ public class Movement : MonoBehaviour
     #region Water Walking speed change
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.gameObject.CompareTag("Water"));
         if (collision.gameObject.CompareTag("Water"))
         {
 

@@ -11,6 +11,7 @@ public class Building : MonoBehaviour
     public GameObject[] amountObjects;
     public GameObject rocks;
     public GameObject[] tools;
+    public static Building instance;
     public int blockIndex = 0;
     public Slot[] inventory = new Slot[10];
     RaycastHit2D hit;
@@ -55,6 +56,7 @@ public class Building : MonoBehaviour
     }
     void Update()
     {
+        instance = this;
         if (Input.GetKeyDown(KeyCode.Q) && player.playerActive){
             GameObject drop = Instantiate(inventory[blockIndex].item);
             drop.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -104,7 +106,6 @@ public class Building : MonoBehaviour
                   hit.collider.gameObject.layer != 5 && (
                    inventory[blockIndex].item.GetComponent<Block>() != null || inventory[blockIndex].ID == 11))
                 {
-                    Debug.Log(inventory[blockIndex].ID);
                     GameObject placed = Instantiate(empty.item);
                     if (inventory[blockIndex].ID != 7)
                     {
@@ -147,26 +148,25 @@ public class Building : MonoBehaviour
     {
     #region Item Collection
         Item item = collision.gameObject.GetComponent<Item>();
-        if (item != null)
-        {
+        if(item != null){
             for (int i = 1; i < inventory.Length; i++)
             {
                 if (inventory[i].ItemName == "")
                 {
                     inventory[i] = AddBlock(
-                        collision.gameObject,
+                        item.gameObject,
                         item.ItemName, 1,
                         item.description,
                         item.rarity,
-                        collision.gameObject.GetComponent<Block>() != null,
+                        item.gameObject.GetComponent<Block>() != null,
                         item.ID);
-                    collision.gameObject.transform.position = new Vector3(1000, 1000, 0);
+                    item.gameObject.transform.position = new Vector3(1000, 1000, 0);
                     break;
                 }
                 if (inventory[i].ItemName == item.ItemName)
                 {
                     inventory[i].amount++;
-                    Destroy(collision.gameObject);
+                    Destroy(item.gameObject);
                     Debug.Log(inventory[i].amount + " " + inventory[i].ItemName);
                     break;
                 }

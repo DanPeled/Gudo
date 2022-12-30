@@ -38,7 +38,9 @@ public class Time : MonoBehaviour{
         if(GetComponent<Movement>().playerActive)
             StartCoroutine(UpdateTime());
         global.GetComponent<Light2D>().intensity = 1 - (currentTime / 100);
-
+        Quaternion theRotation = clock.transform.localRotation;
+        theRotation.z = -(currentTime / 100);
+        clock.transform.localRotation = theRotation;
     }
     IEnumerator UpdateTime()
     {
