@@ -9,7 +9,7 @@ public class Item : MonoBehaviour
     public Block.Rarity rarity;
     public bool isTool;
     public Movement.ToolState type;
-    public float ID;
+    public int ID;
     // Start is called before the first frame update
     void Start()
     {

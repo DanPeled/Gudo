@@ -135,6 +135,7 @@ public class Movement : MonoBehaviour
                             block.gameObject.name,
                             block.transform.position));
                             state = ToolState.None;
+                            Building.instance.placed.Add(replaceWith);
                         }
                     }
                     else if (plant != null && Input.GetMouseButtonDown(0))

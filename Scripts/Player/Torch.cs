@@ -3,6 +3,7 @@ using UnityEngine;
 public class Torch : MonoBehaviour
 {
     public GameObject drop;
+    public int ID = 11;
     void OnMouseDown()
     {
         if(GameObject.Find("Player").GetComponent<Movement>().playerActive){

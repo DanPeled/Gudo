@@ -28,7 +28,7 @@ public class PerlinNoiseMap : MonoBehaviour
     {
         if(randomWorld) seed = Random.Range(-Random.Range(0,100000000), Random.Range(0,100000000));
         if(seed == 63804990) seed = Random.Range(-Random.Range(0,100000000), Random.Range(0,100000000));
-        
+        if(File.Exists("saves/" + gameHandler.saveFileName)) gameHandler.LoadGame();
         GameObject.Find("Inventory").SetActive(false);
         GameObject.Find("HealthBar").SetActive(false);
         GameObject.Find("HealthBarIcon").SetActive(false);

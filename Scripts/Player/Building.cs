@@ -8,6 +8,7 @@ using TMPro;
 public class Building : MonoBehaviour
 {
     public GameObject[] placeable;
+    public List<GameObject> placed = new List<GameObject>();
     public GameObject[] amountObjects;
     public GameObject rocks;
     public GameObject[] tools;
@@ -25,6 +26,26 @@ public class Building : MonoBehaviour
     public Slot empty;
     public Camera cam;
     public Dictionary<float, GameObject> blocks = new Dictionary<float, GameObject>();
+    public void PlaceByID(Vector2 pos){
+        GameObject placed = new GameObject();
+                    if (inventory[blockIndex].ID != 7)
+                    {
+                        placed = Instantiate(blocks[inventory[blockIndex].ID - 1]);
+                        this.placed.Add(placed);
+                    }
+                    else
+                    {
+                        placed = Instantiate(rocks);
+                        this.placed.Add(placed);
+                    }
+                    placed.transform.position = pos;
+
+                    placed.name = string.Format("tile_x{0}_y{1}", placed.transform.position.x, placed.transform.position.y);
+                    if(placed.GetComponent<Animator>() == null) hit.collider.gameObject.transform.position = new Vector3(1000,1000,1000);
+                    Debug.Log(string.Format("Placed {0} at {1}", placed.name, pos));
+                    if (!creative)
+                        inventory[blockIndex].amount--;
+    }
     private void Start()
     {
         none = none_;
@@ -45,6 +66,7 @@ public class Building : MonoBehaviour
         {
             blocks.Add(i, placeable[i]);
         }
+        blocks.Add(11, items[11].gameObject);
         inventory[0] = empty;
     }
     public Slot AddBlock(GameObject block, string blockName,
@@ -106,23 +128,7 @@ public class Building : MonoBehaviour
                   hit.collider.gameObject.layer != 5 && (
                    inventory[blockIndex].item.GetComponent<Block>() != null || inventory[blockIndex].ID == 11))
                 {
-                    GameObject placed = Instantiate(empty.item);
-                    if (inventory[blockIndex].ID != 7)
-                    {
-                        placed = Instantiate(blocks[inventory[blockIndex].ID - 1]);
-                    }
-                    else
-                    {
-                        placed = Instantiate(rocks);
-                    }
-                    placed.transform.position = pos;
-
-                    placed.name = string.Format("tile_x{0}_y{1}", placed.transform.position.x, placed.transform.position.y);
-                    if(placed.GetComponent<Animator>() == null) Destroy(hit.collider.gameObject);
-                    Debug.Log(string.Format("Placed {0} at {1}", placed.name, pos));
-                    if (!creative)
-                        inventory[blockIndex].amount--;
-
+                        PlaceByID(pos);
                 }
             }
 
@@ -166,15 +172,16 @@ public class Building : MonoBehaviour
                 if (inventory[i].ItemName == item.ItemName)
                 {
                     inventory[i].amount++;
-                    Destroy(item.gameObject);
+                    item.gameObject.transform.position = new Vector3(1000,1000,1000);
                     Debug.Log(inventory[i].amount + " " + inventory[i].ItemName);
                     break;
                 }
             }
         }
-        #endregion
+    #endregion
     }
 }
+[System.Serializable]
 public class Slot
 {
     public bool isBlock;
