@@ -57,9 +57,15 @@ setPlayerLightState: a function that takes a boolean value called state as an in
 Start: a special function in Unity that is called when the script is first loaded. In this case, the setPlayerLightState function is called with false as an input, which deactivates both playerAround and playerMiddle objects.
 Update: a special function in Unity that is called every frame of the game. The UpdateTime function is called within this function.
 UpdateTime: a function that is called every frame, and updates the currentTime variable based on whether it is currently day or night. The function also adjusts the intensity of the light on the playerAround and playerMiddle objects based on the current time. If the current time is between 30 and 90, the light intensity of these objects is set to a value between 0 and 0.5, with a value of 0.5 at 90. If the current time is less than 30, the light intensity is set to 0. The function also has a yield return statement that waits for 1 second before continuing, to slow down the rate at which currentTime is updated.
-# [GameHandler.cs](https://github.com/DanPeled/Gudo/blob/master/Scripts/GameHandler.cs)
-This code is responsible for saving and loading the game state in a Unity project. It uses the JsonUtility class to serialize and deserialize the game data to and from a JSON string.
 
-The SaveGame method is responsible for saving the game data. It does this by creating a SaveData object and filling it with the current state of the game. It then converts this object to a JSON string using JsonUtility.ToJson and saves it to a file with the specified saveFileName.
 
-The LoadGame method is responsible for loading the game data. It first checks if the save file exists, and if it does, it reads the contents of the file and converts it back to a SaveData object using JsonUtility.FromJson. It then sets the game state to the values stored in the SaveData object.
+# Saving System
+
+## [SaveData.cs](https://github.com/DanPeled/Gudo/blob/master/Scripts/SaveData.cs)
+SaveData is a serializable class that can be used to store information about a game world, including the name of the world, the position of the player in the world, the seed used to generate the world, the time that has passed in the game, a list of IDs of placed objects, a list of the positions of placed objects, and an inventory of items represented as Slot objects.
+## [GameHandler.cs](https://github.com/DanPeled/Gudo/blob/master/Scripts/GameHandler.cs)
+GameHandler is a class that contains methods for saving and loading a game. The SaveGame method is called to save the game and the LoadGame method is called to load the game.
+
+In the SaveGame method, the position, inventory, and time of the player are stored in a SaveData object, as well as the seed used to generate the world and information about placed objects. The SaveData object is then serialized to a JSON string and written to a file with the name specified in the saveFileName field.
+
+In the LoadGame method, the function first checks if the save file exists. If it does, it reads the contents of the file and converts the JSON data to a SaveData object using JsonUtility.FromJson. The SaveData object is then used to restore the state of the game, including the player's position, inventory, and time, and the seed used to generate the world. Finally, the function attempts to instantiate placed objects, but this code is currently commented out and will not execute.
